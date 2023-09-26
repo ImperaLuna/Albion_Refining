@@ -41,4 +41,18 @@ def refining_mats_variables(raw_resource_type : str, refined_resource_type : str
     refining_items_required = raw_resource_items + refined_resource_items
     return refining_items_required
 
-print(refining_mats_variables('WOOD','PLANKS'))
+def api_url_csv(refining_items_required):
+    '''
+    Create the api url based on function refining_mats_variables() return
+    ARGS:
+        return refining_items_required |STR| -- variable for the url        
+    Return:
+        url |STR| -- final url
+    '''
+
+    table_base_url = 'https://west.albion-online-data.com/api/v2/stats/view/'
+    locations = 'Martlock,Fort%20Sterling,Thetford,Lymhurst,Bridgewatch'
+
+    url = f'{table_base_url}{",".join(refining_items_required)}?locations={locations}'
+
+    return url
