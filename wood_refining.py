@@ -1,10 +1,11 @@
 '''Wood Refining module - To be updated'''
 
-TABLE_BASE_URL = "https://west.albion-online-data.com/api/v2/stats/view/"
-LOCATIONS = "Martlock,Fort%20Sterling,Thetford,Lymhurst,Bridgewatch"
+TABLE_BASE_URL = 'https://west.albion-online-data.com/api/v2/stats/view/'
+LOCATIONS = 'Martlock,Fort%20Sterling,Thetford,Lymhurst,Bridgewatch'
 wood_items = []
 plank_items = ['T3_PLANKS']
 
+# Define the tiers and enchantments
 tier = ('T4', 'T5', 'T6', 'T7', 'T8')
 enchantment = (0, 1, 2, 3, 4)
 
@@ -23,10 +24,10 @@ for t in tier:
             plank_items.append(f'{t}_PLANKS_LEVEL{e}@{e}')
 
 # Combine wood_items and plank_items into a single list
-all_items = wood_items + plank_items
+wood_refining_items = wood_items + plank_items
 
-# Create a URL using join method
-url = f"{TABLE_BASE_URL}{','.join(all_items)}?locations={LOCATIONS}"
+# Create the URL and print it
+url = f'{TABLE_BASE_URL}{",".join(wood_refining_items)}?locations={LOCATIONS}'
 
-print("Combined URL:")
+print('URL TableView Format):')
 print(url)
