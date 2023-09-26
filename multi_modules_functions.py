@@ -45,7 +45,7 @@ def api_url_csv(refining_items_required):
     '''
     Create the api url based on function refining_mats_variables() return
     ARGS:
-        return refining_items_required |STR| -- variable for the url        
+        refining_items_required |STR| -- variable for the url        
     Return:
         url |STR| -- final url
     '''
