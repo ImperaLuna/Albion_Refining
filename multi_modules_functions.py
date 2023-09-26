@@ -20,22 +20,25 @@ def refining_mats_variables(raw_resource_type : str, refined_resource_type : str
     refined_resource_items = []
     refined_resource_items.append(f'T3_{refined_resource_type}') # add T3 refined resource
 
-    for t in tier:
+    for t_level in tier:
         # Flag to track if unenchated raw resource has been added for the tier
-        UNENCHANTED_RAW_ADDED = False
-        UNENCHANTED_PLANK_ADDED = False
-        for e in enchantment:
-            if not UNENCHANTED_RAW_ADDED:
-                raw_resource_items.append(f'{t}_{raw_resource_type}')
+        unenchanted_raw_added = False
+        unenchanted_refined_added = False
+        for e_level in enchantment:
+            if not unenchanted_raw_added:
+                raw_resource_items.append(f'{t_level}_{raw_resource_type}')
                 # Set the constant to True after adding the unenchated tier resource
-                UNENCHANTED_RAW_ADDED = True
-                if not UNENCHANTED_PLANK_ADDED:
-                    refined_resource_items.append(f'{t}_{refined_resource_type}')
-                UNENCHANTED_PLANK_ADDED = True
-            if e > 0:
-                raw_resource_items.append(f'{t}_{raw_resource_type}_LEVEL{e}@{e}')
-                refined_resource_items.append(f'{t}_{refined_resource_type}_LEVEL{e}@{e}')
+                unenchanted_raw_added = True
+                if not unenchanted_refined_added:
+                    refined_resource_items.append(f'{t_level}_{refined_resource_type}')
+                unenchanted_refined_added = True
+            if e_level > 0:
+                raw_resource_items.append(
+                    f'{t_level}_{raw_resource_type}_LEVEL{e_level}@{e_level}')
+                refined_resource_items.append(
+                    f'{t_level}_{refined_resource_type}_LEVEL{e_level}@{e_level}')
 
     refining_items_required = raw_resource_items + refined_resource_items
     return refining_items_required
 
+print(refining_mats_variables('WOOD','PLANKS'))
