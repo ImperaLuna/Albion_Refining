@@ -1,22 +1,23 @@
 '''Wood Refining module - To be updated'''
 
-table_base_url = "https://west.albion-online-data.com/api/v2/stats/view/"
+TABLE_BASE_URL = "https://west.albion-online-data.com/api/v2/stats/view/"
+LOCATIONS = "Martlock,Fort%20Sterling,Thetford,Lymhurst,Bridgewatch"
 wood_items = []
 plank_items = ['T3_PLANKS']
-locations = "Martlock,Fort%20Sterling,Thetford,Lymhurst,Bridgewatch"
 
 tier = ('T4', 'T5', 'T6', 'T7', 'T8')
 enchantment = (0, 1, 2, 3, 4)
 
 for t in tier:
-    base_wood_added = False  # Flag to track if base wood item has been added for the tier
-    base_plank_added = False
+    BASE_WOOD_ADDED = False
+    BASE_PLANK_ADDED = False
     for e in enchantment:
-        if not base_wood_added:
+        if not BASE_WOOD_ADDED:
             wood_items.append(f'{t}_WOOD')
+            BASE_WOOD_ADDED = True  # Set the constant to True after adding the base item
+        if not BASE_PLANK_ADDED:
             plank_items.append(f'{t}_PLANKS')
-            base_wood_added = True  # Set the flag to True after adding the base item
-            base_plank_added = True
+            BASE_PLANK_ADDED = True  # Set the constant to True after adding the base item
         if e > 0:
             wood_items.append(f'{t}_WOOD_LEVEL{e}@{e}')
             plank_items.append(f'{t}_PLANKS_LEVEL{e}@{e}')
@@ -25,7 +26,7 @@ for t in tier:
 all_items = wood_items + plank_items
 
 # Create a URL using join method
-url = f"{table_base_url}{','.join(all_items)}?locations={locations}"
+url = f"{TABLE_BASE_URL}{','.join(all_items)}?locations={LOCATIONS}"
 
 print("Combined URL:")
 print(url)
