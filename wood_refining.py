@@ -9,15 +9,15 @@ tier = ('T4', 'T5', 'T6', 'T7', 'T8')
 enchantment = (0, 1, 2, 3, 4)
 
 for t in tier:
-    BASE_WOOD_ADDED = False
+    BASE_WOOD_ADDED = False # Flag to track if base wood item has been added for the tier
     BASE_PLANK_ADDED = False
     for e in enchantment:
         if not BASE_WOOD_ADDED:
             wood_items.append(f'{t}_WOOD')
-            BASE_WOOD_ADDED = True  # Set the constant to True after adding the base item
+            BASE_WOOD_ADDED = True # Set the constant to True after adding the base item
         if not BASE_PLANK_ADDED:
             plank_items.append(f'{t}_PLANKS')
-            BASE_PLANK_ADDED = True  # Set the constant to True after adding the base item
+            BASE_PLANK_ADDED = True
         if e > 0:
             wood_items.append(f'{t}_WOOD_LEVEL{e}@{e}')
             plank_items.append(f'{t}_PLANKS_LEVEL{e}@{e}')
