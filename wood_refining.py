@@ -13,6 +13,6 @@ csv_filename = os.path.join(script_directory, 'wood_refining.csv')
 
 save_data_to_csv(wood_url, csv_filename)
 
-ITEM_ID = 'T4_PLANKS'
-show_price = show_best_price(ITEM_ID, csv_filename)
+ITEM_IDS = ['T3_PLANKS','T4_PLANKS','T5_PLANKS']
+show_price = show_best_price(ITEM_IDS, csv_filename)
 print(show_price)

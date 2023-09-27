@@ -102,26 +102,29 @@ def save_data_to_csv(api_url: str, csv_filename: str, timeout: int = 10):
     except requests.exceptions.Timeout:
         print('The request to the API timed out.')
 
-
-def show_best_price(item_id, csv_filename):
+def show_best_price(item_ids, csv_filename):
     '''
     Reads a CSV file, selects specific columns, and returns a DataFrame 
-    sorted by 'sell_price_max' in descending order.
+    grouped by 'item_id' and sorted by 'sell_price_max' in ascending order within each group.
 
     Args:
-        item_id |str| -- Needs to be specified for the moment
+        item_ids |list| -- List of item IDs to filter the data.
 
         csv_filename |str| -- File created using fct save_data_to_csv()
 
     Returns:
-        result_data_frame |DataFrame| -- containing the selected columns sorted by 'sell_price_max'.
+        result_data_frame |DataFrame| -- Grouped and ascended by 'item_id' and 'sell_price_max
     '''
 
     selected_columns = ['item_id', 'city', 'sell_price_max', 'sell_price_max_date']
 
     data_frame = pd.read_csv(csv_filename)
-    filtered_data_frame = data_frame[data_frame['item_id'] == item_id]
-    result_data_frame = filtered_data_frame[selected_columns]
-    result_data_frame = result_data_frame.sort_values(by='sell_price_max')
+    data_frame['sell_price_max'] = data_frame['sell_price_max'].astype(float)
+    filtered_data_frame = data_frame[data_frame['item_id'].isin(item_ids)]
+
+    # Group by 'item_id' and sort within each group
+    result_data_frame = (filtered_data_frame[selected_columns]
+                         .groupby('item_id', as_index=True)
+                         .apply(lambda x: x.sort_values(by='sell_price_max', ascending=True)))
 
     return result_data_frame
