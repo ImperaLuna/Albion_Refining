@@ -45,7 +45,7 @@ def refining_mats_variables(raw_resource_type : str, refined_resource_type : str
     refining_items_required = raw_resource_items + refined_resource_items
     return refining_items_required
 
-def api_url_csv(refining_items_required):
+def api_url_csv(refining_items_required: str):
     '''
     Create the api url based on function refining_mats_variables() return
     ARGS:
