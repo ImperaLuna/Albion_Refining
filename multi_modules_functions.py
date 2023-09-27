@@ -1,4 +1,8 @@
 '''Store functions used in multiple modules'''
+import pandas as pd
+import requests
+from bs4 import BeautifulSoup
+
 
 def refining_mats_variables(raw_resource_type : str, refined_resource_type : str):
     '''
@@ -53,6 +57,52 @@ def api_url_csv(refining_items_required):
     table_base_url = 'https://west.albion-online-data.com/api/v2/stats/view/'
     locations = 'Martlock,Fort%20Sterling,Thetford,Lymhurst,Bridgewatch'
 
-    url = f'{table_base_url}{",".join(refining_items_required)}?locations={locations}'
+    api_url = f'{table_base_url}{",".join(refining_items_required)}?locations={locations}'
 
-    return url
+    return api_url
+
+def save_data_to_csv(api_url: str, csv_filename: str, timeout: int = 10):
+    '''
+    Fetch data from an API and save it to a CSV file.
+
+    Args:
+        api_url |str| -- The URL of the API to fetch data from, obtained via api_url_csv fct
+
+        csv_filename |str| -- The name of the CSV file to save the data to, requires .csv extension
+
+        timeout |int, optional| -- Maximum response wait time in seconds (default: 10 seconds).
+
+    Result:
+        Creates a CSV file with the specified data.
+    '''
+
+    # Define the selected columns here
+    selected_columns = ['item_id', 'city',
+        'sell_price_min', 'sell_price_min_date',
+        'sell_price_max', 'sell_price_max_date']
+
+    try:
+        response = requests.get(api_url, timeout=timeout)
+
+        if response.status_code == 200:
+            soup = BeautifulSoup(response.text, 'html.parser')
+            table = soup.find('table')
+
+            if table:
+                # Use pandas to read the HTML table directly into a DataFrame
+                data_frame  = pd.read_html(str(table))[0]
+
+                # Select and keep only the columns of interest
+                data_frame  = data_frame [selected_columns]
+
+                # Write the DataFrame to a CSV file
+                data_frame .to_csv(csv_filename, index=False, encoding='utf-8')
+
+                print(f"Data has been saved to {csv_filename}")
+            else:
+                print('No table is found in the API response')
+        else:
+            print(f'Failed to fetch data from the API. Status code: {response.status_code}')
+
+    except requests.exceptions.Timeout:
+        print('The request to the API timed out.')
