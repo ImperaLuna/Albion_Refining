@@ -6,5 +6,3 @@ from multi_modules_functions import api_url_csv
 
 cloth_items = refining_mats_variables('FIBER','CLOTH')
 url_cloth = api_url_csv(cloth_items)
-
-print(url_cloth)

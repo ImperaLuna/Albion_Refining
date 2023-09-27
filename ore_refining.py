@@ -6,6 +6,3 @@ from multi_modules_functions import api_url_csv
 
 ore_items = refining_mats_variables('ORE','METALBAR')
 url_ore = api_url_csv(ore_items)
-
-print(url_ore)
-

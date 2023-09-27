@@ -6,5 +6,3 @@ from multi_modules_functions import api_url_csv
 
 hide_items = refining_mats_variables('HIDE','LEATHER')
 url_hide = api_url_csv(hide_items)
-
-print(url_hide)
