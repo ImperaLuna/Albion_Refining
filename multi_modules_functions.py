@@ -101,3 +101,25 @@ def save_data_to_csv(api_url: str, csv_filename: str, timeout: int = 10):
 
     except requests.exceptions.Timeout:
         print('The request to the API timed out.')
+
+
+def show_best_price(item_id, csv_filename):
+    '''
+    Reads a CSV file, selects specific columns, and returns a DataFrame 
+    sorted by 'sell_price_max' in descending order.
+
+    Parameters:
+    csv_filename (str): The path to the CSV file.
+
+    Returns:
+    pd.DataFrame: A DataFrame containing the selected columns sorted by 'sell_price_max'.
+    '''
+
+    selected_columns = ['item_id', 'city', 'sell_price_max', 'sell_price_max_date']
+
+    data_frame = pd.read_csv(csv_filename)
+    filtered_data_frame = data_frame[data_frame['item_id'] == item_id]
+    result_data_frame = filtered_data_frame[selected_columns]
+    result_data_frame = result_data_frame.sort_values(by='sell_price_max')
+
+    return result_data_frame
