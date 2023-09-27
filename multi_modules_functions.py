@@ -98,7 +98,7 @@ def save_data_to_csv(api_url: str, csv_filename: str, timeout: int = 10):
                 # Write the DataFrame to a CSV file
                 data_frame .to_csv(csv_filename, index=False, encoding='utf-8')
 
-                print(f"Data has been saved to {csv_filename}")
+                print(f'Data has been saved to {csv_filename}')
             else:
                 print('No table is found in the API response')
         else:
