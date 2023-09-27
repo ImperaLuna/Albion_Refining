@@ -68,7 +68,7 @@ def save_data_to_csv(api_url: str, csv_filename: str, timeout: int = 10):
     Args:
         api_url |str| -- The URL of the API to fetch data from, obtained via api_url_csv fct
 
-        csv_filename |str| -- The name of the CSV file to save the data to, requires .csv extension
+        csv_filename |str| -- Set the CSV file name (with .csv extension and path) for data storage.
 
         timeout |int, optional| -- Maximum response wait time in seconds (default: 10 seconds).
 
