@@ -2,7 +2,6 @@
 import pandas as pd
 import requests
 from bs4 import BeautifulSoup
-test
 
 
 def refining_mats_variables(raw_resource_type : str, refined_resource_type : str):
