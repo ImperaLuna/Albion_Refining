@@ -108,11 +108,13 @@ def show_best_price(item_id, csv_filename):
     Reads a CSV file, selects specific columns, and returns a DataFrame 
     sorted by 'sell_price_max' in descending order.
 
-    Parameters:
-    csv_filename (str): The path to the CSV file.
+    Args:
+        item_id |str| -- Needs to be specified for the moment
+
+        csv_filename |str| -- File created using fct save_data_to_csv()
 
     Returns:
-    pd.DataFrame: A DataFrame containing the selected columns sorted by 'sell_price_max'.
+        result_data_frame |DataFrame| -- containing the selected columns sorted by 'sell_price_max'.
     '''
 
     selected_columns = ['item_id', 'city', 'sell_price_max', 'sell_price_max_date']
