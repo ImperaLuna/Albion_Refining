@@ -89,13 +89,8 @@ def save_data_to_csv(api_url: str, csv_filename: str, timeout: int = 10):
             table = soup.find('table')
 
             if table:
-                # Use pandas to read the HTML table directly into a DataFrame
                 data_frame  = pd.read_html(str(table))[0]
-
-                # Select and keep only the columns of interest
                 data_frame  = data_frame [selected_columns]
-
-                # Write the DataFrame to a CSV file
                 data_frame .to_csv(csv_filename, index=False, encoding='utf-8')
 
                 print(f'Data has been saved to {csv_filename}')
