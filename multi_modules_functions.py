@@ -157,47 +157,103 @@ def refining_calculator(data_frame):
 
     return final_result
 
-def generate_variable_name(tier):
+def generate_variable_name(tier, raw_resource):
     '''
-    Generates variable names based on the input tier and enchantment level.
+    Generates variable names based on the input tier and raw resource.
 
     Args:
         tier |str|: A string representing the item's tier (e.g., 'T4', 'T5').
+        raw_resource |str|: A string representing the raw resource (e.g., 'ore', 'fiber', 'hide').
 
     Returns:
         variable_name |list or None|: A list with variable name(s) or None if input is invalid.
 
-    Constructs variable names based on tier and enchantment level:
-    - For 'T4', appends '_WOOD' or '_WOOD_LEVEL{enchantment}@{enchantment}'.
-    - For 'T5' to 'T8', includes '_PLANKS' and possibly '_PLANKS_LEVEL{enchantment}@{enchantment}'.
+    Constructs variable names based on tier, raw resource, refined resource (from dictionary), and enchantment level:
+    - For 'T4', appends '_{raw_resource}' or '_{raw_resource}_LEVEL{enchantment}@{enchantment}'.
+    - For 'T5' to 'T8', includes '_{raw_resource}' and possibly '_{raw_resource}_LEVEL{enchantment}@{enchantment}'.
 
     Example:
-    >>> generate_variable_name('T4.0')
-    ['T4_WOOD', 'T3_PLANKS']
+    >>> generate_variable_name('T4.0', 'ore')
+    ['T4_ORE', 'T3_METALBAR']
     '''
+
+    # Dictionary mapping raw resources to refined resources
+    resource_type = {
+        'WOOD': 'PLANKS',
+        'ORE': 'METALBAR',
+        'FIBER': 'CLOTH',
+        'HIDE': 'LEATHER'
+    }
 
     tiers = ('T4', 'T5', 'T6', 'T7', 'T8')
     tier_str_parts = tier.split('.')
 
+    # Convert the input raw_resource to uppercase
+    raw_resource = raw_resource.upper()
+
     if len(tier_str_parts) == 2 and tier_str_parts[0].upper() in tiers:
-        ench = tier_str_parts[1]
+        ench = tier_str_parts[1]  # variable to define enchantment levels
 
         if tier_str_parts[0].upper() == 'T4':
             if ench == '0':
-                variable_name = [f'{tier_str_parts[0].upper()}_WOOD', 'T3_PLANKS']
+                variable_name = [f'{tier_str_parts[0].upper()}_{raw_resource}', f'T3_{resource_type.get(raw_resource, "")}']
             elif ench in ('1', '2', '3', '4'):
-                variable_name = [f'{tier_str_parts[0].upper()}_WOOD_LEVEL{ench}@{ench}','T3_PLANKS']
+                variable_name = [f'{tier_str_parts[0].upper()}_{raw_resource}_LEVEL{ench}@{ench}', f'T3_{resource_type.get(raw_resource, "")}']
             else:
                 variable_name = None  # Invalid enchantment level
         else:
             if ench == '0':
-                variable_name = [f'{tier_str_parts[0].upper()}_WOOD',
-                                f'T{int(tier_str_parts[0][1])-1}_PLANKS']
+                variable_name = [f'{tier_str_parts[0].upper()}_{raw_resource}',
+                                f'T{int(tier_str_parts[0][1])-1}_{resource_type.get(raw_resource, "")}']
             elif ench in ('1', '2', '3', '4'):
-                variable_name = [f'{tier_str_parts[0].upper()}_WOOD_LEVEL{ench}@{ench}',
-                                 f'T{int(tier_str_parts[0][1])-1}_PLANKS_LEVEL{ench}@{ench}']
+                variable_name = [f'{tier_str_parts[0].upper()}_{raw_resource}_LEVEL{ench}@{ench}',
+                                 f'T{int(tier_str_parts[0][1])-1}_{resource_type.get(raw_resource, "")}_LEVEL{ench}@{ench}']
             else:
                 variable_name = None  # Invalid enchantment level
 
         return variable_name
+
+
+######
+
+def strip_variable_name(variable_names):
+    '''
+    Extracts and formats the resource types from a list of variable names.
+
+    Args:
+        variable_names |list of str|: A list of variable names (e.g., ['T4_WOOD', 'T5_ORE_LEVEL2@2']).
+
+    Returns:
+        resource_types |list of str|: A list of extracted and formatted resource types ('wood', 'ore', 'cloth', 'hide').
+    '''
+    resource_types = []
     
+    for variable_name in variable_names:
+        # Remove any extra characters and split by underscores
+        parts = variable_name.strip().split('_')
+        
+        if len(parts) >= 2:
+            # Get the resource type and convert to lowercase
+            resource_type = parts[1].lower()
+            
+            # Check if it's a valid resource type
+            if resource_type in ('wood', 'ore', 'cloth', 'hide'):
+                resource_types.append(resource_type)
+    
+    return resource_types
+
+def create_csv_filename(resource_names):
+    '''
+    Create a CSV filename based on resource name(s).
+
+    Args:
+        resource_names |list of str|: List of resource name(s) (e.g., ['wood'], ['ore'], ['cloth', 'hide']).
+
+    Returns:
+        csv_filename |str|: The formatted CSV filename ('{}_refining.csv').
+    '''
+    # Get the first element of the list (assuming it contains only one element)
+    resource_name = resource_names[0] if resource_names else 'unknown'
+    
+    return f'{resource_name}_refining.csv'
+
