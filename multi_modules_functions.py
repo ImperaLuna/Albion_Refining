@@ -158,18 +158,46 @@ def refining_calculator(data_frame):
     return final_result
 
 def generate_variable_name(tier):
+    '''
+    Generates variable names based on the input tier and enchantment level.
 
-    TIERS = ('T4', 'T5', 'T6', 'T7', 'T8')
+    Args:
+        tier |str|: A string representing the item's tier (e.g., 'T4', 'T5').
+
+    Returns:
+        variable_name |list or None|: A list with variable name(s) or None if input is invalid.
+
+    Constructs variable names based on tier and enchantment level:
+    - For 'T4', appends '_WOOD' or '_WOOD_LEVEL{enchantment}@{enchantment}'.
+    - For 'T5' to 'T8', includes '_PLANKS' and possibly '_PLANKS_LEVEL{enchantment}@{enchantment}'.
+
+    Example:
+    >>> generate_variable_name('T4.0')
+    ['T4_WOOD', 'T3_PLANKS']
+    '''
+
+    tiers = ('T4', 'T5', 'T6', 'T7', 'T8')
     tier_str_parts = tier.split('.')
-    if len(tier_str_parts) == 2 and tier_str_parts[0].upper() in TIERS:
-        enchantment = tier_str_parts[1]
-        if enchantment == '0':
-            variable_name = [f'{tier_str_parts[0].upper()}_WOOD', 'T3_PLANKS']
-        elif enchantment in ('1', '2', '3', '4'):
-            variable_name = [f'{tier_str_parts[0].upper()}_WOOD_LEVEL{enchantment}@{enchantment}', 'T3_PLANKS']
+
+    if len(tier_str_parts) == 2 and tier_str_parts[0].upper() in tiers:
+        ench = tier_str_parts[1]
+
+        if tier_str_parts[0].upper() == 'T4':
+            if ench == '0':
+                variable_name = [f'{tier_str_parts[0].upper()}_WOOD', 'T3_PLANKS']
+            elif ench in ('1', '2', '3', '4'):
+                variable_name = [f'{tier_str_parts[0].upper()}_WOOD_LEVEL{ench}@{ench}','T3_PLANKS']
+            else:
+                variable_name = None  # Invalid enchantment level
         else:
-            variable_name = None  # Invalid enchantment level
+            if ench == '0':
+                variable_name = [f'{tier_str_parts[0].upper()}_WOOD',
+                                f'T{int(tier_str_parts[0][1])-1}_PLANKS']
+            elif ench in ('1', '2', '3', '4'):
+                variable_name = [f'{tier_str_parts[0].upper()}_WOOD_LEVEL{ench}@{ench}',
+                                 f'T{int(tier_str_parts[0][1])-1}_PLANKS_LEVEL{ench}@{ench}']
+            else:
+                variable_name = None  # Invalid enchantment level
 
         return variable_name
-
-
+    
