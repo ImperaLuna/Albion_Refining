@@ -2,7 +2,9 @@
 import pandas as pd
 import requests
 from bs4 import BeautifulSoup
+import refining_calculator as rc
 
+#! ====================================== Building CSV files ======================================
 
 def refining_mats_variables(raw_resource_type : str, refined_resource_type : str):
     '''
@@ -102,6 +104,8 @@ def save_data_to_csv(api_url: str, csv_filename: str, timeout: int = 10):
     except requests.exceptions.Timeout:
         print('The request to the API timed out.')
 
+#! ====================================== Building CSV files ======================================
+
 def show_best_price(item_ids, csv_filename):
     '''
     Reads a CSV file, selects specific columns, and returns a DataFrame 
@@ -130,32 +134,7 @@ def show_best_price(item_ids, csv_filename):
 
     return result_data_frame
 
-def refining_calculator(data_frame):
-    '''
-    Calculates the formula 2 * T4_WOOD + T3_PLANKS using a DataFrame.
 
-    Args:
-        data_frame |DataFrame| -- DataFrame with 'item_id' and 'sell_price_max' columns.
-
-    Returns:
-        final_result |float| -- Result of the formula.
-    '''
-    #TODO : generalize this function for any tier 4 resource
-
-    # Filter data for T4_WOOD and T3_PLANKS
-    t4_wood_data = data_frame[data_frame['item_id'] == 'T4_WOOD']
-    t3_planks_data = data_frame[data_frame['item_id'] == 'T3_PLANKS']
-
-    # Calculate the minimum sell_price_max for T4_WOOD and T3_PLANKS
-    min_t4_wood = t4_wood_data['sell_price_max'].min()
-    min_t3_planks = t3_planks_data['sell_price_max'].min()
-
-    t4_wood_total_price = 2* min_t4_wood
-
-    # Apply the formula
-    final_result = t4_wood_total_price + min_t3_planks
-
-    return final_result
 
 def generate_variable_name(tier, raw_resource):
     '''
@@ -168,9 +147,9 @@ def generate_variable_name(tier, raw_resource):
     Returns:
         variable_name |list or None|: A list with variable name(s) or None if input is invalid.
 
-    Constructs variable names based on tier, raw resource, refined resource (from dictionary), and enchantment level:
+    Constructs variable based on tier, raw resource, refined resource and enchantment level:
     - For 'T4', appends '_{raw_resource}' or '_{raw_resource}_LEVEL{enchantment}@{enchantment}'.
-    - For 'T5' to 'T8', includes '_{raw_resource}' and possibly '_{raw_resource}_LEVEL{enchantment}@{enchantment}'.
+    - For 'T5' to 'T8', includes '_{raw_resource}' and possibly '_{raw_resource}_LEVEL{e}@{e}'.
 
     Example:
     >>> generate_variable_name('T4.0', 'ore')
@@ -196,18 +175,25 @@ def generate_variable_name(tier, raw_resource):
 
         if tier_str_parts[0].upper() == 'T4':
             if ench == '0':
-                variable_name = [f'{tier_str_parts[0].upper()}_{raw_resource}', f'T3_{resource_type.get(raw_resource, "")}']
+                variable_name = [f'{tier_str_parts[0].upper()}_{raw_resource}',
+                                f'T3_{resource_type.get(raw_resource, "")}']
             elif ench in ('1', '2', '3', '4'):
-                variable_name = [f'{tier_str_parts[0].upper()}_{raw_resource}_LEVEL{ench}@{ench}', f'T3_{resource_type.get(raw_resource, "")}']
+                variable_name = [f'{tier_str_parts[0].upper()}_{raw_resource}_LEVEL{ench}@{ench}',
+                                 f'T3_{resource_type.get(raw_resource, "")}']
             else:
                 variable_name = None  # Invalid enchantment level
         else:
             if ench == '0':
-                variable_name = [f'{tier_str_parts[0].upper()}_{raw_resource}',
-                                f'T{int(tier_str_parts[0][1])-1}_{resource_type.get(raw_resource, "")}']
+                variable_name = [
+                    f'{tier_str_parts[0].upper()}_{raw_resource}',
+                    f'T{int(tier_str_parts[0][1])-1}_{resource_type.get(raw_resource, "")}'
+                ]
             elif ench in ('1', '2', '3', '4'):
-                variable_name = [f'{tier_str_parts[0].upper()}_{raw_resource}_LEVEL{ench}@{ench}',
-                                 f'T{int(tier_str_parts[0][1])-1}_{resource_type.get(raw_resource, "")}_LEVEL{ench}@{ench}']
+                variable_name = [
+                    f'{tier_str_parts[0].upper()}_{raw_resource}_LEVEL{ench}@{ench}',
+                    f'T{int(tier_str_parts[0][1])-1}_\
+                    {resource_type.get(raw_resource, "")}_LEVEL{ench}@{ench}'
+                ]
             else:
                 variable_name = None  # Invalid enchantment level
 
@@ -221,25 +207,25 @@ def strip_variable_name(variable_names):
     Extracts and formats the resource types from a list of variable names.
 
     Args:
-        variable_names |list of str|: A list of variable names (e.g., ['T4_WOOD', 'T5_ORE_LEVEL2@2']).
+        variable_names |list of str|: A list of variable names ex:['T4_WOOD', 'T5_ORE_']).
 
     Returns:
-        resource_types |list of str|: A list of extracted and formatted resource types ('wood', 'ore', 'cloth', 'hide').
+        resource_types |list of str|: A list resource types ('wood', 'ore', 'cloth', 'hide').
     '''
     resource_types = []
-    
+
     for variable_name in variable_names:
         # Remove any extra characters and split by underscores
         parts = variable_name.strip().split('_')
-        
+
         if len(parts) >= 2:
             # Get the resource type and convert to lowercase
             resource_type = parts[1].lower()
-            
+
             # Check if it's a valid resource type
             if resource_type in ('wood', 'ore', 'cloth', 'hide'):
                 resource_types.append(resource_type)
-    
+
     return resource_types
 
 def create_csv_filename(resource_names):
@@ -247,13 +233,36 @@ def create_csv_filename(resource_names):
     Create a CSV filename based on resource name(s).
 
     Args:
-        resource_names |list of str|: List of resource name(s) (e.g., ['wood'], ['ore'], ['cloth', 'hide']).
+        resource_names |list of str|: (e.g., ['wood'], ['ore'], ['cloth', 'hide']).
 
     Returns:
         csv_filename |str|: The formatted CSV filename ('{}_refining.csv').
     '''
     # Get the first element of the list (assuming it contains only one element)
     resource_name = resource_names[0] if resource_names else 'unknown'
-    
+
     return f'{resource_name}_refining.csv'
 
+#####
+
+def price_calculator(variable_name,data_frame):
+    '''
+    Args:
+        - variable_name |list of strings| - generated by generate_variable_name
+        - data_frame |data_frame| - generated by show_best_price
+    '''
+
+    extract_tier = variable_name[0].split('_')
+    tier = extract_tier[0]
+
+    if tier == 'T4':
+        mats_price = rc.refining_calculator_t4(data_frame)
+    elif tier == 'T5':
+        mats_price = rc.refining_calculator_t5(data_frame)
+    elif tier == 'T6':
+        mats_price = rc.refining_calculator_t6(data_frame)
+    elif tier == 'T7':
+        mats_price = rc.refining_calculator_t7(data_frame)
+    elif tier == 'T8':
+        mats_price = rc.refining_calculator_t8(data_frame)
+    return mats_price

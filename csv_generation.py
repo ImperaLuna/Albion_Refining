@@ -1,4 +1,4 @@
-'''Module that creates the csv files'''
+'''CSV files creation module using the albion data project API'''
 
 import os
 from multi_modules_functions import refining_mats_variables
