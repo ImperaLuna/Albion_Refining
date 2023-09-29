@@ -164,9 +164,9 @@ def generate_variable_name(tier):
     if len(tier_str_parts) == 2 and tier_str_parts[0].upper() in TIERS:
         enchantment = tier_str_parts[1]
         if enchantment == '0':
-            variable_name = f"{tier_str_parts[0].upper()}_WOOD"
+            variable_name = [f'{tier_str_parts[0].upper()}_WOOD', 'T3_PLANKS']
         elif enchantment in ('1', '2', '3', '4'):
-            variable_name = f"{tier_str_parts[0].upper()}_WOOD_LEVEL{enchantment}@{enchantment}"
+            variable_name = [f'{tier_str_parts[0].upper()}_WOOD_LEVEL{enchantment}@{enchantment}', 'T3_PLANKS']
         else:
             variable_name = None  # Invalid enchantment level
 
