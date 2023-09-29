@@ -115,6 +115,7 @@ def show_best_price(item_ids, csv_filename):
     Returns:
         result_data_frame |DataFrame| -- Grouped and ascended by 'item_id' and 'sell_price_max
     '''
+    # TODO Save item_ids internally and accept it as an argument
 
     selected_columns = ['item_id', 'city', 'sell_price_max', 'sell_price_max_date']
 
@@ -128,3 +129,30 @@ def show_best_price(item_ids, csv_filename):
                          .apply(lambda x: x.sort_values(by='sell_price_max', ascending=True)))
 
     return result_data_frame
+
+def refining_calculator(data_frame):
+    '''
+    Calculates the formula 2 * T4_WOOD + T3_PLANKS using a DataFrame.
+
+    Args:
+        data_frame |DataFrame| -- DataFrame with 'item_id' and 'sell_price_max' columns.
+
+    Returns:
+        final_result |float| -- Result of the formula.
+    '''
+    #TODO : generalize this function for any tier 4 resource
+
+    # Filter data for T4_WOOD and T3_PLANKS
+    t4_wood_data = data_frame[data_frame['item_id'] == 'T4_WOOD']
+    t3_planks_data = data_frame[data_frame['item_id'] == 'T3_PLANKS']
+
+    # Calculate the minimum sell_price_max for T4_WOOD and T3_PLANKS
+    min_t4_wood = t4_wood_data['sell_price_max'].min()
+    min_t3_planks = t3_planks_data['sell_price_max'].min()
+
+    t4_wood_total_price = 2* min_t4_wood
+
+    # Apply the formula
+    final_result = t4_wood_total_price + min_t3_planks
+
+    return final_result
