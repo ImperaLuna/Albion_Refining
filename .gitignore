@@ -5,6 +5,9 @@
 
 #CSV file
 wood_refining.csv
+cloth_refining.csv
+ore_refining.csv
+hide_refining.csv
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
