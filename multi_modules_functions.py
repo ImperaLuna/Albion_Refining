@@ -156,3 +156,20 @@ def refining_calculator(data_frame):
     final_result = t4_wood_total_price + min_t3_planks
 
     return final_result
+
+def generate_variable_name(tier):
+
+    TIERS = ('T4', 'T5', 'T6', 'T7', 'T8')
+    tier_str_parts = tier.split('.')
+    if len(tier_str_parts) == 2 and tier_str_parts[0].upper() in TIERS:
+        enchantment = tier_str_parts[1]
+        if enchantment == '0':
+            variable_name = f"{tier_str_parts[0].upper()}_WOOD"
+        elif enchantment in ('1', '2', '3', '4'):
+            variable_name = f"{tier_str_parts[0].upper()}_WOOD_LEVEL{enchantment}@{enchantment}"
+        else:
+            variable_name = None  # Invalid enchantment level
+
+        return variable_name
+
+

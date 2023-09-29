@@ -5,6 +5,7 @@ from multi_modules_functions import api_url_csv
 from multi_modules_functions import save_data_to_csv
 from multi_modules_functions import show_best_price
 from multi_modules_functions import refining_calculator
+from multi_modules_functions import generate_variable_name
 
 wood_items = refining_mats_variables('WOOD', 'PLANKS')
 wood_url = api_url_csv(wood_items)
@@ -22,3 +23,7 @@ print(show_price)
 ref_total_price = refining_calculator(show_price)
 print()
 print(f'Price for resources is {ref_total_price} silver')
+
+
+variable_name = generate_variable_name('t4')
+print(variable_name)
