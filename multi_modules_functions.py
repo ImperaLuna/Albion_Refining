@@ -119,7 +119,6 @@ def show_best_price(item_ids, csv_filename):
     Returns:
         result_data_frame |DataFrame| -- Grouped and ascended by 'item_id' and 'sell_price_max
     '''
-    # TODO Save item_ids internally and accept it as an argument
 
     selected_columns = ['item_id', 'city', 'sell_price_max', 'sell_price_max_date']
 
@@ -191,8 +190,7 @@ def generate_variable_name(tier, raw_resource):
             elif ench in ('1', '2', '3', '4'):
                 variable_name = [
                     f'{tier_str_parts[0].upper()}_{raw_resource}_LEVEL{ench}@{ench}',
-                    f'T{int(tier_str_parts[0][1])-1}_\
-                    {resource_type.get(raw_resource, "")}_LEVEL{ench}@{ench}'
+                    f'T{int(tier_str_parts[0][1])-1}_{resource_type.get(raw_resource, "")}_LEVEL{ench}@{ench}'
                 ]
             else:
                 variable_name = None  # Invalid enchantment level

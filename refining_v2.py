@@ -7,8 +7,8 @@ from multi_modules_functions import show_best_price
 from multi_modules_functions import price_calculator
 
 # create a variable name to generate the mats price
-variable_name = generate_variable_name('t4.4', 'hide')
-print(variable_name)
+variable_name = generate_variable_name('t6.1', 'ore')
+print (variable_name)
 
 # strip variable in order to find right csv_file
 strip_var_name = strip_variable_name(variable_name)
@@ -20,4 +20,7 @@ print(show_price_df)
 
 #print total cost for mats used in refining process
 mats_price = price_calculator(variable_name, show_price_df)
-print(mats_price)
+print()
+print(f'Total price for 1 craft: {mats_price}')
+
+
