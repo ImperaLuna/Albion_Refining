@@ -144,7 +144,7 @@ def generate_variable_name(tier, raw_resource):
         raw_resource |str|: A string representing the raw resource (e.g., 'ore', 'fiber', 'hide').
 
     Returns:
-        variable_name |list or None|: A list with variable name(s) or None if input is invalid.
+        variable_name |list or None|: A list with variable name(s) if input is invalid.
 
     Constructs variable based on tier, raw resource, refined resource and enchantment level:
     - For 'T4', appends '_{raw_resource}' or '_{raw_resource}_LEVEL{enchantment}@{enchantment}'.
@@ -264,3 +264,62 @@ def price_calculator(variable_name,data_frame):
     elif tier == 'T8':
         mats_price = rc.refining_calculator_t8(data_frame)
     return mats_price
+
+def nr_of_daily_crafts(variable_name):
+
+    if variable_name[0][-1] == 'E':
+        tier = f'{variable_name[0][1]}.0'
+    else:
+        tier = f'{variable_name[0][1]}.{variable_name[0][-1]}'
+        
+    focus_cost_max_spec = {
+        '4.0': 3, '4.1': 6, '4.2': 10, '4.3': 18, '4.4': 503,
+        '5.0': 6, '5.1': 10, '5.2': 18, '5.3': 31, '5.4': 880,
+        '6.0': 10, '6.1': 18, '6.2': 31, '6.3': 55, '6.4': 1539,
+        '7.0': 18, '7.1': 31, '7.2': 53, '7.3': 96, '7.4': 2694,
+        '8.0': 31, '8.1': 55, '8.2': 96, '8.3': 168, '8.4': 4714
+    }
+
+    daily_focus = 10000
+
+    focus_per_craft = focus_cost_max_spec.get(tier)
+    daily_crafts = daily_focus / focus_per_craft
+
+    return daily_crafts
+
+def show_max_price(item_ids, csv_filename):
+
+    #TODO: clean this shit up
+
+    refined_item_id = item_ids[1]
+    tier_refined_item = int(refined_item_id[1])
+    tier_refined_item += 1
+    updated_tier_number = str(tier_refined_item)
+    updated_tier = refined_item_id[0] + updated_tier_number + refined_item_id[2:]
+
+    selected_columns = ['item_id', 'city', 'sell_price_max', 'sell_price_max_date']
+
+    data_frame = pd.read_csv(csv_filename)
+    data_frame['sell_price_max'] = data_frame['sell_price_max'].astype(float)
+    filtered_data_frame = data_frame[data_frame['item_id'] == updated_tier]
+
+    # Group by 'item_id' and sort within each group
+    result_data_frame = (filtered_data_frame[selected_columns]
+                         .groupby('item_id', as_index=True)
+                         .apply(lambda x: x.sort_values(by='sell_price_max', ascending=False)))
+
+    return result_data_frame
+
+def max_price_refined(data_frame):
+    #todo clean this shit
+    unique_item_id = data_frame["item_id"].unique()
+
+    item_id = data_frame[data_frame['item_id'] == unique_item_id[0]]
+    item_id_price = item_id['sell_price_max'].min()
+
+    return item_id_price
+
+def calculate_daily_profit(daily_crafts, resource_value):
+    #todo this logic is shit
+    resource_returned = daily_crafts * resource_value * 0.539
+    return resource_returned
