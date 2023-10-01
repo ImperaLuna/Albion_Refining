@@ -9,6 +9,9 @@ cloth_refining.csv
 ore_refining.csv
 hide_refining.csv
 
+#test files
+test.py
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
