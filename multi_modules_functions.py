@@ -267,7 +267,7 @@ def price_calculator(variable_name,data_frame):
 
 def nr_of_daily_crafts(variable_name):
 
-    if variable_name[0][-1] == 'E':
+    if variable_name[0][-1] not in ['1', '2', '3', '4']:
         tier = f'{variable_name[0][1]}.0'
     else:
         tier = f'{variable_name[0][1]}.{variable_name[0][-1]}'
