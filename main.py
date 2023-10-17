@@ -3,7 +3,7 @@
 import multi_modules_functions as fc
 from refining_calculator import calculate__materials_price
 
-variable_name = fc.generate_variable_name('t7.1', 'wood')
+variable_name = fc.generate_variable_name('t4.0', 'fiber')
 
 print()
 print(f'The list generated for your items is: {variable_name}')
@@ -25,7 +25,8 @@ print(f'Daily number of crafts is: {daily_crafts}')
 
 total_price_bought_mats = int(refining_materials_price * daily_crafts)
 formatted_total_price_bought_mats = format(total_price_bought_mats, ',')
-print(f'Total amount that needs to be invested into resources is: {formatted_total_price_bought_mats}')
+print(f'Total amount that needs to be invested into resources is:'
+      f'{formatted_total_price_bought_mats}')
 print()
 
 show_sell_price_df = fc.show_sell_price_df(variable_name, resource_type)

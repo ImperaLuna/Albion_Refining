@@ -105,7 +105,7 @@ def generate_variable_name(tier, raw_resource):
             if ench == '0':
                 variable_name = [f'{tier_str_parts[0].upper()}_{raw_resource}',
                                 f'T3_{resource_type.get(raw_resource, "")}']
-            elif ench in ('1', '2', '3', '4'):
+            elif ench in ['1' , '2' , '3', '4']:
                 variable_name = [f'{tier_str_parts[0].upper()}_{raw_resource}_LEVEL{ench}@{ench}',
                                  f'T3_{resource_type.get(raw_resource, "")}']
             else:
@@ -114,12 +114,14 @@ def generate_variable_name(tier, raw_resource):
             if ench == '0':
                 variable_name = [
                     f'{tier_str_parts[0].upper()}_{raw_resource}',
-                    f'T{int(tier_str_parts[0][1])-1}_{resource_type.get(raw_resource, "")}'
+                    f'T{int(tier_str_parts[0][1]) - 1}'
+                    f'_{resource_type.get(raw_resource, "")}'
                 ]
-            elif ench in ('1', '2', '3', '4'):
+            elif ench in ['1' , '2' , '3', '4']:
                 variable_name = [
                     f'{tier_str_parts[0].upper()}_{raw_resource}_LEVEL{ench}@{ench}',
-                    f'T{int(tier_str_parts[0][1])-1}_{resource_type.get(raw_resource, "")}_LEVEL{ench}@{ench}'
+                    f'T{int(tier_str_parts[0][1]) - 1}'
+                    f'_{resource_type.get(raw_resource, "")}_LEVEL{ench}@{ench}'
                 ]
             else:
                 variable_name = None  # Invalid enchantment level
