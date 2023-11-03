@@ -9,14 +9,8 @@ import csv_generation
 
 
 def main():
-      user_input_tier = uin.get_tier_input()
-      user_input_enchantment = uin.get_enchantment_input()
-      user_input_resource_type = uin.get_resource_input()
 
-      uin_tier_enchantment, uin_resource_type = uin.convert_user_input(user_input_tier, user_input_enchantment, user_input_resource_type)
-
-      variable_name = fc.generate_variable_name(uin_tier_enchantment, uin_resource_type)
-
+      variable_name = user_input()
 
       print()
       print(f'The list generated for your items is: {variable_name}')
@@ -69,6 +63,16 @@ def main():
 def update_csv():
      csv_generation.main()
 
+
+def user_input():
+      user_input_tier = uin.get_tier_input()
+      user_input_enchantment = uin.get_enchantment_input()
+      user_input_resource_type = uin.get_resource_input()
+
+      uin_tier_enchantment, uin_resource_type = uin.convert_user_input(user_input_tier, user_input_enchantment, user_input_resource_type)
+      variable_name = fc.generate_variable_name(uin_tier_enchantment, uin_resource_type)
+      return variable_name
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Update CSV data")
     parser.add_argument("--update", action="store_true", help="Update CSV data")
@@ -77,3 +81,5 @@ if __name__ == "__main__":
 
     if args.update:
         update_csv()
+        
+    main()
