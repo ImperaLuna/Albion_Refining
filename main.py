@@ -2,11 +2,18 @@
 
 import multi_modules_functions as fc
 from refining_calculator import calculate__materials_price
+import user_input as uin
 
 
 def main():
+      user_input_tier = uin.get_tier_input()
+      user_input_enchantment = uin.get_enchantment_input()
+      user_input_resource_type = uin.get_resource_input()
 
-      variable_name = fc.generate_variable_name('t4.0', 'fiber')
+      uin_tier_enchantment, uin_resource_type = uin.convert_user_input(user_input_tier, user_input_enchantment, user_input_resource_type)
+
+      variable_name = fc.generate_variable_name(uin_tier_enchantment, uin_resource_type)
+
 
       print()
       print(f'The list generated for your items is: {variable_name}')

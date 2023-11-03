@@ -2,6 +2,7 @@
 This module provides a simple command-line interface for collecting user inputs,
 including tier selection, enchantment level, and resource type.
 '''
+from typing import List
 
 def get_tier_input() -> str:
     """
@@ -43,7 +44,7 @@ def get_resource_input() -> str:
     resource_menu = {
         "1": "wood",
         "2": "ore",
-        "3": "cloth",
+        "3": "fiber",
         "4": "hide"
     }
 
@@ -58,3 +59,22 @@ def get_resource_input() -> str:
             return resource_menu[choice]
         else:
             print("Invalid input. Please enter a valid number (1-4).")
+
+def convert_user_input(tier: str, enchantment: str, resource_type: str) -> List[str]:
+    """
+    Converts user input into a list of strings.
+
+    Args:
+        - tier (str) -- The tier of the resource.
+        - enchantment (str) -- The enchantment of the resource.
+        - resource_type (str) -- The type of resource.
+
+    Returns:
+        - List[str]: A list containing two strings:
+            - The resource tier and enchantment in the format 't{tier}.{enchantment}'.
+            - The resource type.
+    """
+    resource_tier = f"t{tier}.{enchantment}"
+    generate_variable_name_input = [resource_tier, resource_type]
+    return generate_variable_name_input
+

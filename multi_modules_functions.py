@@ -64,7 +64,7 @@ def show_sell_price_df(item_ids: List[str], csv_filename: str) -> pd.DataFrame:
     return sell_refined_resource_df
 
 
-def generate_variable_name(tier, raw_resource):
+def generate_variable_name(tier: str, raw_resource: str) -> List[str]:
     '''
     Generates variable names based on the input tier and raw resource.
 
