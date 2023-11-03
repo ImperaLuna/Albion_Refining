@@ -1,13 +1,31 @@
-'''Refining calculator run module'''
-
 import multi_modules_functions as fc
 from refining_calculator import calculate__materials_price
 import user_input as uin
 import argparse
 import csv_generation
 
+from typing import Dict
 
-def calculate_and_store_variables():
+def main() -> None:
+    parser = argparse.ArgumentParser(description="Update CSV data")
+    parser.add_argument("--update", action="store_true", help="Update CSV data")
+
+    args = parser.parse_args()
+
+    if args.update:
+        update_csv()
+    else:
+        variables = calculate_and_store_variables()
+        print_variables(variables)
+
+
+def calculate_and_store_variables() -> Dict:
+    """
+    Calculate and store various variables related to refining items.
+
+    Returns:
+        - Dict: A dictionary containing the calculated variables.
+    """
     variable_name = user_input()
 
     strip_var_name = fc.strip_variable_name(variable_name)
@@ -50,7 +68,14 @@ def calculate_and_store_variables():
         "expected_profit_per_month": expected_profit_per_month,
     }
 
-def print_variables(variables):
+def print_variables(variables: Dict) -> None:
+    """
+    Print the calculated variables to the console.
+
+    Args:
+        - variables |Dict| -- A dictionary containing the calculated variables.
+
+    """
     print()
     print(f'The list generated for your items is: {variables["variable_name"]}')
     print()
@@ -69,10 +94,19 @@ def print_variables(variables):
     print(f'Expected profit per month is: {format(variables["expected_profit_per_month"], ",")}')
     print()
 
-def update_csv():
+def update_csv() -> None:
+    """
+    Update CSV data.
+    """
     csv_generation.main()
 
-def user_input():
+def user_input() -> str:
+    """
+    Get user input for refining item details.
+
+    Returns:
+        - variable_name |str| -- The generated variable name for the refining item.
+    """
     user_input_tier = uin.get_tier_input()
     user_input_enchantment = uin.get_enchantment_input()
     user_input_resource_type = uin.get_resource_input()
@@ -82,13 +116,4 @@ def user_input():
     return variable_name
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Update CSV data")
-    parser.add_argument("--update", action="store_true", help="Update CSV data")
-
-    args = parser.parse_args()
-
-    if args.update:
-        update_csv()
-    else:
-        variables = calculate_and_store_variables()
-        print_variables(variables)
+      main()
