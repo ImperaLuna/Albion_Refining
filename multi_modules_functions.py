@@ -1,8 +1,9 @@
 '''Store functions used in multiple modules'''
 
+import os
 from typing import List
 import pandas as pd
-import os
+
 
 FOLDER_PATH = 'csv_data'
 
@@ -57,7 +58,7 @@ def show_sell_price_df(item_ids: List[str], csv_filename: str) -> pd.DataFrame:
     selected_columns = ['item_id', 'city', 'sell_price_max', 'sell_price_max_date']
 
     csv_filename = os.path.join(FOLDER_PATH, csv_filename)
-    
+
 
     data_frame = pd.read_csv(csv_filename)
     data_frame['sell_price_max'] = data_frame['sell_price_max'].astype(float)
