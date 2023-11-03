@@ -3,6 +3,9 @@
 import multi_modules_functions as fc
 from refining_calculator import calculate__materials_price
 import user_input as uin
+import argparse
+import csv_generation
+
 
 
 def main():
@@ -63,5 +66,14 @@ def main():
       print(f'Expected profit per month is: {formatted_expected_profit_per_month}')
       print()
 
+def update_csv():
+     csv_generation.main()
+
 if __name__ == "__main__":
-      main()
+    parser = argparse.ArgumentParser(description="Update CSV data")
+    parser.add_argument("--update", action="store_true", help="Update CSV data")
+
+    args = parser.parse_args()
+
+    if args.update:
+        update_csv()
