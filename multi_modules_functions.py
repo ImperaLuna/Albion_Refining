@@ -2,6 +2,9 @@
 
 from typing import List
 import pandas as pd
+import os
+
+FOLDER_PATH = 'csv_data'
 
 
 def show_buy_price_df(item_ids: List[str], csv_filename: str) -> pd.DataFrame:
@@ -18,6 +21,8 @@ def show_buy_price_df(item_ids: List[str], csv_filename: str) -> pd.DataFrame:
     '''
 
     columns_to_select = ['item_id', 'city', 'sell_price_max', 'sell_price_max_date']
+
+    csv_filename = os.path.join(FOLDER_PATH, csv_filename)
 
     data = pd.read_csv(csv_filename)
     data['sell_price_max'] = data['sell_price_max'].astype(float)
@@ -50,6 +55,9 @@ def show_sell_price_df(item_ids: List[str], csv_filename: str) -> pd.DataFrame:
     next_tier = f"{required_item_id[0]}{int(required_item_id[1]) + 1}{required_item_id[2:]}"
 
     selected_columns = ['item_id', 'city', 'sell_price_max', 'sell_price_max_date']
+
+    csv_filename = os.path.join(FOLDER_PATH, csv_filename)
+    
 
     data_frame = pd.read_csv(csv_filename)
     data_frame['sell_price_max'] = data_frame['sell_price_max'].astype(float)
