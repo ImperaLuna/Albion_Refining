@@ -116,27 +116,33 @@ def create_csv_file(api_url: str, csv_filename: str, timeout: int = 10):
 
 
 # TODO: add a function that executes this either on a timer or on specific request
+def main():
+    script_directory = os.path.dirname(os.path.abspath(__file__))
 
-script_directory = os.path.dirname(os.path.abspath(__file__))
+    csv_folder = os.path.join(script_directory, 'csv_data')
+    os.makedirs(csv_folder, exist_ok=True)
 
-wood_api_variables = generate_refining_api_variables('WOOD', 'PLANKS')
-ore_api_variables = generate_refining_api_variables('ORE', 'METALBAR')
-cloth_api_variables = generate_refining_api_variables('FIBER', 'CLOTH')
-hide_api_variables = generate_refining_api_variables('HIDE', 'LEATHER')
-
-
-wood_api_url = generate_refining_api_url(wood_api_variables)
-ore_api_url = generate_refining_api_url(ore_api_variables)
-cloth_api_url = generate_refining_api_url(cloth_api_variables)
-hide_api_url = generate_refining_api_url(hide_api_variables)
+    wood_api_variables = generate_refining_api_variables('WOOD', 'PLANKS')
+    ore_api_variables = generate_refining_api_variables('ORE', 'METALBAR')
+    cloth_api_variables = generate_refining_api_variables('FIBER', 'CLOTH')
+    hide_api_variables = generate_refining_api_variables('HIDE', 'LEATHER')
 
 
-csv_filename_wood = os.path.join(script_directory, 'wood_refining.csv')
-csv_filename_ore = os.path.join(script_directory, 'ore_refining.csv')
-csv_filename_cloth = os.path.join(script_directory, 'cloth_refining.csv')
-csv_filename_fiber = os.path.join(script_directory, 'hide_refining.csv')
+    wood_api_url = generate_refining_api_url(wood_api_variables)
+    ore_api_url = generate_refining_api_url(ore_api_variables)
+    cloth_api_url = generate_refining_api_url(cloth_api_variables)
+    hide_api_url = generate_refining_api_url(hide_api_variables)
 
-create_csv_file(wood_api_url, csv_filename_wood)
-create_csv_file(ore_api_url, csv_filename_ore)
-create_csv_file(cloth_api_url, csv_filename_cloth)
-create_csv_file(hide_api_url, csv_filename_fiber)
+
+    csv_filename_wood = os.path.join(csv_folder, 'wood_refining.csv')
+    csv_filename_ore = os.path.join(csv_folder, 'ore_refining.csv')
+    csv_filename_cloth = os.path.join(csv_folder, 'cloth_refining.csv')
+    csv_filename_fiber = os.path.join(csv_folder, 'hide_refining.csv')
+
+    create_csv_file(wood_api_url, csv_filename_wood)
+    create_csv_file(ore_api_url, csv_filename_ore)
+    create_csv_file(cloth_api_url, csv_filename_cloth)
+    create_csv_file(hide_api_url, csv_filename_fiber)
+
+if __name__ == "__main__":
+    main()
