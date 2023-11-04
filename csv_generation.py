@@ -115,8 +115,8 @@ def create_csv_file(api_url: str, csv_filename: str, timeout: int = 10):
         print('The request to the API timed out.')
 
 
-# TODO: add a function that executes this either on a timer or on specific request
 def main():
+    '''Main Function'''
     script_directory = os.path.dirname(os.path.abspath(__file__))
 
     csv_folder = os.path.join(script_directory, 'csv_data')

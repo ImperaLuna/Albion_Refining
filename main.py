@@ -1,12 +1,15 @@
+'''Main module used to run the albion refining project'''
+
+import argparse
+from typing import Dict
 import multi_modules_functions as fc
 from refining_calculator import calculate__materials_price
 import user_input as uin
-import argparse
 import csv_generation
 
-from typing import Dict
 
 def main() -> None:
+    '''Main Function'''
     parser = argparse.ArgumentParser(description="Update CSV data")
     parser.add_argument("--update", action="store_true", help="Update CSV data")
 
@@ -43,7 +46,9 @@ def calculate_and_store_variables() -> Dict:
 
     refined_resource_cost = int(fc.find_maximum_sell_price(show_sell_price_df) * 0.935)
 
-    returned_resources = int(fc.calculate_returned_resources_value(daily_crafts, refined_resource_cost))
+    returned_resources = int(fc.calculate_returned_resources_value(
+                                daily_crafts, refined_resource_cost))
+
 
     max_crafted_resources = int(refined_resource_cost * daily_crafts)
 
@@ -83,7 +88,8 @@ def print_variables(variables: Dict) -> None:
     print()
     print(f'Total price for 1 craft: {format(variables["refining_materials_price"], ",")}')
     print(f'Daily number of crafts is: {variables["daily_crafts"]}')
-    print(f'Total amount that needs to be invested into resources is: {format(variables["total_price_bought_mats"], ",")}')
+    print('Total amount that needs to be invested into resources is:'
+                                     f'{format(variables["total_price_bought_mats"], ",")}')
     print()
     print(variables["show_sell_price_df"])
     print()
@@ -111,9 +117,13 @@ def user_input() -> str:
     user_input_enchantment = uin.get_enchantment_input()
     user_input_resource_type = uin.get_resource_input()
 
-    uin_tier_enchantment, uin_resource_type = uin.convert_user_input(user_input_tier, user_input_enchantment, user_input_resource_type)
+    uin_tier_enchantment, uin_resource_type = uin.convert_user_input(
+                                            user_input_tier,
+                                            user_input_enchantment,
+                                            user_input_resource_type)
+
     variable_name = fc.generate_variable_name(uin_tier_enchantment, uin_resource_type)
     return variable_name
 
 if __name__ == "__main__":
-      main()
+    main()

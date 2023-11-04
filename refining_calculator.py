@@ -125,7 +125,6 @@ def calculate_t8_refining_materials_price(data_frame: pd.DataFrame) -> int:
     return total_cost
 
 def calculate__materials_price(variable_name: List[str], data_frame: pd.DataFrame) -> int:
-    #todo : this variables most likely will change
     '''
     Calculates the refining materials price based on the provided variables and data frame.
 
