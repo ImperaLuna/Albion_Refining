@@ -1,7 +1,7 @@
 '''Main module used to run the albion refining project'''
 
 import argparse
-from typing import Dict
+from typing import Dict, List
 import multi_modules_functions as fc
 from refining_calculator import calculate__materials_price
 import user_input as uin
@@ -106,12 +106,12 @@ def update_csv() -> None:
     """
     csv_generation.main()
 
-def user_input() -> str:
+def user_input() -> List[str]:
     """
     Get user input for refining item details.
 
     Returns:
-        - variable_name |str| -- The generated variable name for the refining item.
+        - variable_name |List[str]| -- The generated variable name for the refining item.
     """
     user_input_tier = uin.get_tier_input()
     user_input_enchantment = uin.get_enchantment_input()
