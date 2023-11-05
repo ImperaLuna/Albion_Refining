@@ -25,7 +25,6 @@ The program will prompt you to provide the following information via the termina
 
 After inputting these details, the program will execute the necessary calculations and utilize Pandas to display a list of resource prices required for the refining process, ordered by the cheapest option.
 
-With this Albion Automated Refining Profit Calculator, you can efficiently make informed decisions when it comes to resource refining in the game.
 
 
 
