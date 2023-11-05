@@ -33,26 +33,17 @@ def calculate_and_store_variables() -> Dict:
 
     strip_var_name = fc.strip_variable_name(variable_name)
     resource_type = fc.generate_resource_csv_filename(strip_var_name)
-
     show_price_df = fc.show_buy_price_df(variable_name, resource_type)
-
     refining_materials_price = int(calculate__materials_price(variable_name, show_price_df))
-
     daily_crafts = int(fc.calculate_daily_crafts(variable_name))
-
-    total_price_bought_mats = int(refining_materials_price * daily_crafts)
-
     show_sell_price_df = fc.show_sell_price_df(variable_name, resource_type)
-
     refined_resource_cost = int(fc.find_maximum_sell_price(show_sell_price_df) * 0.935)
-
     returned_resources = int(fc.calculate_returned_resources_value(
                                 daily_crafts, refined_resource_cost))
-
-
+    
     max_crafted_resources = int(refined_resource_cost * daily_crafts)
-
     total_daily_profit = int(returned_resources + max_crafted_resources)
+    total_price_bought_mats = int(refining_materials_price * daily_crafts)
     total_daily_profit -= total_price_bought_mats
 
     expected_profit_per_month = 30 * total_daily_profit
@@ -86,19 +77,20 @@ def print_variables(variables: Dict) -> None:
     print()
     print(variables["show_price_df"])
     print()
-    print(f'Total price for 1 craft: {format(variables["refining_materials_price"], ",")}')
+    print(f'Total price for 1 craft: {variables["refining_materials_price"]:,}')
     print(f'Daily number of crafts is: {variables["daily_crafts"]}')
-    print('Total amount that needs to be invested into resources is:'
-                                     f'{format(variables["total_price_bought_mats"], ",")}')
+    print(f'Total amount that needs to be invested into resources is: '
+          f'{variables["total_price_bought_mats"]:,}')
     print()
     print(variables["show_sell_price_df"])
     print()
-    print(f'Refined resource cost: {format(variables["refined_resource_cost"], ",")}')
-    print(f'Value of returned resources is: {format(variables["returned_resources"], ",")}')
-    print(f'Max value of crafted resources is: {format(variables["max_crafted_resources"], ",")}')
-    print(f'Total daily profit is: {format(variables["total_daily_profit"], ",")}')
-    print(f'Expected profit per month is: {format(variables["expected_profit_per_month"], ",")}')
+    print(f'Refined resource cost: {variables["refined_resource_cost"]:,}')
+    print(f'Value of returned resources is: {variables["returned_resources"]:,}')
+    print(f'Max value of crafted resources is: {variables["max_crafted_resources"]:,}')
+    print(f'Total daily profit is: {variables["total_daily_profit"]:,}')
+    print(f'Expected profit per month is: {variables["expected_profit_per_month"]:,}')
     print()
+
 
 def update_csv() -> None:
     """
